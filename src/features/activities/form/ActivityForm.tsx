@@ -43,7 +43,7 @@ export const ActivityForm: React.FC<IProps> = ({
         if (activity.id.length === 0) {
             let newActivity = {
                 ...activity,
-                id: 'guid'
+                id: uuid()
             }
             createActivity(newActivity)
         } else {
