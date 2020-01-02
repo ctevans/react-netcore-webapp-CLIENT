@@ -10,16 +10,9 @@ interface DetailParams {
     id: string;
 }
 
-const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match }) => {
+const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, history }) => {
     const activityStore = useContext(ActivityStore);
-    const { createActivity, editActivity, submitting, cancelFormOpen, activity: initialFormState, loadActivity } = activityStore;
-
-    useEffect(() => {
-        if (match.params.id) {
-            loadActivity(match.params.id).then(
-                () => initialFormState && setActivity(initialFormState));
-        }
-    }, [])
+    const { createActivity, editActivity, submitting, cancelFormOpen, activity: initialFormState, loadActivity, clearActivity } = activityStore;
 
     const initializeForm = () => {
         if (initialFormState) {
@@ -39,6 +32,16 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match }) =>
 
     const [activity, setActivity] = useState<IActivity>(initializeForm);
 
+    useEffect(() => {
+        if (match.params.id && activity.id.length === 0) {
+            loadActivity(match.params.id).then(
+                () => initialFormState && setActivity(initialFormState));
+        }
+        return () => {
+            clearActivity();
+        }
+    }, [loadActivity, clearActivity, match.params.id, initialFormState, activity.id.length]);
+
     const handleInputChange = (event: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.currentTarget;
         setActivity({ ...activity, [name]: value })
@@ -50,9 +53,9 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match }) =>
                 ...activity,
                 id: uuid()
             }
-            createActivity(newActivity)
+            createActivity(newActivity).then(() => history.push(`/activities/${newActivity.id}`))
         } else {
-            editActivity(activity);
+            editActivity(activity).then(() => history.push(`/activities/${activity.id}`));
         }
     }
 
