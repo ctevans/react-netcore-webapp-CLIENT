@@ -3,7 +3,7 @@ import { Card, Image, Icon, Button } from 'semantic-ui-react'
 import { IActivity } from '../../../app/models/activity'
 import ActivityStore from '../../../app/stores/activityStore';
 import { observer } from 'mobx-react-lite';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 
 interface DetailParams {
@@ -34,7 +34,7 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match, h
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths={2}>
-                    <Button onClick={() => openEditForm(activity!.id)} basic color='blue' content='Edit' />
+                    <Button as={Link} to={`/manage/${activity.id}`} basic color='blue' content='Edit' />
                     <Button onClick={() => history.push('/activities')} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
