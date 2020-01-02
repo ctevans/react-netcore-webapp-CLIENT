@@ -38,7 +38,6 @@ const App = () => {
       <NavBar />
       <Container style={{ marginTop: '7em' }}>
         <ActivityDashboard
-          setEditMode={setEditMode}
           deleteActivity={handleDeleteActivity}
           submitting={submitting}
           target={target}
