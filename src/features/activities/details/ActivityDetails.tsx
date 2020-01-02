@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react'
 import { Card, Image, Icon, Button } from 'semantic-ui-react'
-import { IActivity } from '../../../app/models/activity'
 import ActivityStore from '../../../app/stores/activityStore';
 import { observer } from 'mobx-react-lite';
 import { RouteComponentProps, Link } from 'react-router-dom';
@@ -12,7 +11,7 @@ interface DetailParams {
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({ match, history }) => {
     const activityStore = useContext(ActivityStore);
-    const { activity, openEditForm, cancelSelectedActivity, loadActivity, loadingInitial } = activityStore;
+    const { activity, loadActivity, loadingInitial } = activityStore;
 
     useEffect(() => {
         loadActivity(match.params.id);
