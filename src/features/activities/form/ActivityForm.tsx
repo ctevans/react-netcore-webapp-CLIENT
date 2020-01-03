@@ -72,7 +72,10 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, hist
                                 <Field component={TextInput} name='city' placeholder="City" value={activity.city} />
                                 <Field component={TextInput} name='venue' placeholder="Venue" value={activity.venue} />
                                 <Button disabled={loading} loading={submitting} floated='right' positive type='submit' content="Submit" />
-                                <Button disabled={loading} onClick={() => history.push('/activities')} floated='right' type='button' content="Cancel" />
+                                <Button disabled={loading} onClick={
+                                    activity.id ? () =>
+                                        history.push(`/activities/${activity.id}`) : () => history.push('/activities')}
+                                    floated='right' type='button' content="Cancel" />
                             </Form>
                         )} />
                 </Segment>
