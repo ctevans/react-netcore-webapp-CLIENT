@@ -33,7 +33,7 @@ interface DetailParams {
 
 const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, history }) => {
     const activityStore = useContext(ActivityStore);
-    const { createActivity, editActivity, submitting, activity: initialFormState, loadActivity, clearActivity } = activityStore;
+    const { createActivity, editActivity, submitting, loadActivity } = activityStore;
 
     const [activity, setActivity] = useState(new ActivityFormValues());
     const [loading, setLoading] = useState(false);
@@ -75,7 +75,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, hist
                         validate={validate}
                         initialValues={activity}
                         onSubmit={handleFinalFormSubmit}
-                        render={({ handleSubmit }) => (
+                        render={({ handleSubmit, invalid, pristine }) => (
                             <Form onSubmit={handleSubmit} loading={loading}>
                                 <Field name='title' placeholder="Title" value={activity.title} component={TextInput} />
                                 <Field component={TextAreaInput} name='description' rows={3} placeholder="Description" value={activity.description} />
@@ -86,7 +86,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, hist
                                 </Form.Group>
                                 <Field component={TextInput} name='city' placeholder="City" value={activity.city} />
                                 <Field component={TextInput} name='venue' placeholder="Venue" value={activity.venue} />
-                                <Button disabled={loading} loading={submitting} floated='right' positive type='submit' content="Submit" />
+                                <Button disabled={loading || invalid || pristine} loading={submitting} floated='right' positive type='submit' content="Submit" />
                                 <Button disabled={loading} onClick={
                                     activity.id ? () =>
                                         history.push(`/activities/${activity.id}`) : () => history.push('/activities')}
