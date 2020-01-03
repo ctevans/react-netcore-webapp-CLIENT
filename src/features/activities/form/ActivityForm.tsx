@@ -9,6 +9,7 @@ import { Form as FinalForm, Field } from 'react-final-form';
 import TextInput from '../../../app/common/form/TextInput';
 import TextAreaInput from './TextAreaInput';
 import SelectInput from './SelectInput';
+import { category } from '../../../app/common/options/categoryOptions';
 
 interface DetailParams {
     id: string;
@@ -77,7 +78,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, hist
                             <Form onSubmit={handleSubmit} >
                                 <Field name='title' placeholder="Title" value={activity.title} component={TextInput} />
                                 <Field component={TextAreaInput} name='description' rows={3} placeholder="Description" value={activity.description} />
-                                <Field component={SelectInput} options={} name='category' placeholder="Category" value={activity.category} />
+                                <Field component={SelectInput} options={category} name='category' placeholder="Category" value={activity.category} />
                                 <Field component={TextInput} name='date' placeholder="Date" value={activity.date} />
                                 <Field component={TextInput} name='city' placeholder="City" value={activity.city} />
                                 <Field component={TextInput} name='venue' placeholder="Venue" value={activity.venue} />
