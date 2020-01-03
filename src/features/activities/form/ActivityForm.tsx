@@ -41,14 +41,11 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, hist
     const [activity, setActivity] = useState<IActivityFormValues>(initializeForm);
 
     useEffect(() => {
-        if (match.params.id && activity.id) {
+        if (match.params.id) {
             loadActivity(match.params.id).then(
-                () => initialFormState && setActivity(initialFormState));
+                (activity) => setActivity(activity));
         }
-        return () => {
-            clearActivity();
-        }
-    }, [loadActivity, clearActivity, match.params.id, initialFormState, activity.id]);
+    }, [loadActivity, match.params.id]);
 
     const handleInputChange = (event: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.currentTarget;
@@ -69,7 +66,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, hist
 
     const handleFinalFormSubmit = (values: any) => {
         const dateAndTime = combineDateAndTime(values.date, values.time);
-        const {date, time, ...activity} = values; //Remove date and time from activity!
+        const { date, time, ...activity } = values; //Remove date and time from activity!
         activity.date = dateAndTime;
         console.log(activity);
     }
@@ -87,7 +84,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, hist
                                 <Field component={SelectInput} options={category} name='category' placeholder="Category" value={activity.category} />
                                 <Form.Group widths="equal">
                                     <Field component={DateInput} name='date' date={true} placeholder="Date" value={activity.date} />
-                                    <Field component={DateInput} name='time' time ={true} placeholder="Time" value={activity.date} />
+                                    <Field component={DateInput} name='time' time={true} placeholder="Time" value={activity.date} />
                                 </Form.Group>
                                 <Field component={TextInput} name='city' placeholder="City" value={activity.city} />
                                 <Field component={TextInput} name='venue' placeholder="Venue" value={activity.venue} />
