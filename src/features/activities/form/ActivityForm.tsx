@@ -6,6 +6,7 @@ import ActivityStore from '../../../app/stores/activityStore';
 import { observer } from 'mobx-react-lite';
 import { RouteComponentProps } from 'react-router-dom';
 import { Form as FinalForm, Field } from 'react-final-form';
+import TextInput from '../../../app/common/form/TextInput';
 
 interface DetailParams {
     id: string;
@@ -72,7 +73,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, hist
                         onSubmit={handleFinalFormSubmit}
                         render={({ handleSubmit }) => (
                             <Form onSubmit={handleSubmit} >
-                                <Field name='title' placeholder="Title" value={activity.title} component='input' />
+                                <Field name='title' placeholder="Title" value={activity.title} component={TextInput} />
                                 <Form.TextArea onChange={handleInputChange} name='description' rows={2} placeholder="Description" value={activity.description} />
                                 <Form.Input onChange={handleInputChange} name='category' placeholder="Category" value={activity.category} />
                                 <Form.Input onChange={handleInputChange} name='date' type='datetime-local' placeholder="Date" value={activity.date} />
