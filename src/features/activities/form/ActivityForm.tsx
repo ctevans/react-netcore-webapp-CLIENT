@@ -12,6 +12,20 @@ import SelectInput from './SelectInput';
 import { category } from '../../../app/common/options/categoryOptions';
 import DateInput from './DateInput';
 import { combineDateAndTime } from '../../../app/common/util/util';
+import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate';
+
+const validate = combineValidators({
+    title: isRequired({ message: 'The event title is required' }),
+    category: isRequired('Category'),
+    description: composeValidators(
+        isRequired('Description'),
+        hasLengthGreaterThan(4)({ message: 'Description needs to be at least 5 characters' })
+    )(),
+    city: isRequired('City'),
+    date: isRequired('Date'),
+    time: isRequired('Time'),
+    venue: isRequired('Venue')
+})
 
 interface DetailParams {
     id: string;
@@ -58,6 +72,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, hist
             <Grid.Column width={10}>
                 <Segment clearing>
                     <FinalForm
+                        validate={validate}
                         initialValues={activity}
                         onSubmit={handleFinalFormSubmit}
                         render={({ handleSubmit }) => (
