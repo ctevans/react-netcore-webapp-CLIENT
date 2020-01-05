@@ -6,6 +6,7 @@ import { IUser, IUserFormValues } from '../app/models/user';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
+//Put JWT into the headers bearer.
 axios.interceptors.request.use((config) => {
     const token = window.localStorage.getItem('jwt');
     if (token) config.headers.Authorization = `Bearer ${token}`;
