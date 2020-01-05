@@ -18,6 +18,7 @@ export default class UserStore {
         try {
             const user = await agent.User.login(values);
             this.user = user;
+            console.log(user);
         } catch (error) {
             console.log(error);
         }
