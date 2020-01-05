@@ -1,8 +1,7 @@
 import React, { useState, FormEvent, useContext, useEffect } from 'react'
 import { Form, Segment, Button, Grid } from 'semantic-ui-react'
-import { IActivityFormValues, ActivityFormValues } from '../../../app/models/activity'
+import { ActivityFormValues } from '../../../app/models/activity'
 import { v4 as uuid } from 'uuid';
-import ActivityStore from '../../../app/stores/activityStore';
 import { observer } from 'mobx-react-lite';
 import { RouteComponentProps } from 'react-router-dom';
 import { Form as FinalForm, Field } from 'react-final-form';
@@ -13,7 +12,7 @@ import { category } from '../../../app/common/options/categoryOptions';
 import DateInput from './DateInput';
 import { combineDateAndTime } from '../../../app/common/util/util';
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate';
-import { RootStore, RootStoreContext } from '../../../app/stores/rootStore';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const validate = combineValidators({
     title: isRequired({ message: 'The event title is required' }),

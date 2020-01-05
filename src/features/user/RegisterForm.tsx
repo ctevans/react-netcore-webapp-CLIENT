@@ -10,30 +10,40 @@ import ErrorMessage from '../activities/form/ErrorMessage';
 
 const validate = combineValidators({
     email: isRequired('email'),
-    password: isRequired('password')
-})
+    password: isRequired('password'),
+    displayName: isRequired('displayName'),
+    username: isRequired('username')
+});
 
-const LoginForm = () => {
+const RegisterForm = () => {
     const rootStore = useContext(RootStoreContext);
-    const { login } = rootStore.userStore;
+    const { register } = rootStore.userStore;
 
     return (
         <FinalForm
-            onSubmit={(values: IUserFormValues) => login(values).catch(error => ({ [FORM_ERROR]: error }))}
+            onSubmit={(values: IUserFormValues) => register(values).catch(error => ({ [FORM_ERROR]: error }))}
             validate={validate}
             render={({ handleSubmit, submitting, form, submitError, invalid, pristine, dirtySinceLastSubmit }) => (
                 <Form onSubmit={handleSubmit} error>
-                    <Header as='h2' content="Login to App" color='teal' textAlign='center' />
+                    <Header as='h2' content="Sign Into App" color='teal' textAlign='center' />
                     <Field
                         name='email'
                         component={TextInput}
                         placeholder='Email' />
                     <Field
+                        name='username'
+                        component={TextInput}
+                        placeholder='Username' />
+                    <Field
+                        name='displayName'
+                        component={TextInput}
+                        placeholder='Display Name' />
+                    <Field
                         name='password'
                         component={TextInput}
                         placeholder='Password'
                         type='password' />
-                    {submitError && !dirtySinceLastSubmit && <ErrorMessage error={submitError} text='Invalid username or password'/>}
+                    {submitError && !dirtySinceLastSubmit && <ErrorMessage error={submitError} />}
                     <br />
                     <Button disabled={invalid && !dirtySinceLastSubmit || pristine} color='teal' loading={submitting} content="Login" fluid />
                 </Form >
@@ -42,4 +52,4 @@ const LoginForm = () => {
     );
 }
 
-export default LoginForm;
+export default RegisterForm;
