@@ -1,9 +1,9 @@
 import React from 'react'
-import { Form as FinalForm, Field, Form } from 'react-final-form';
+import { Form as FinalForm, Field } from 'react-final-form';
 import TextInput from '../../app/common/form/TextInput';
-import { Button } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
 
-export const LoginForm = () => {
+const LoginForm = () => {
     return (
         <FinalForm
             onSubmit={(values) => console.log(values)}
@@ -13,16 +13,16 @@ export const LoginForm = () => {
                         name='email'
                         component={TextInput}
                         placeholder='Email' />
-                    />
-                <Field
+                    <Field
                         name='password'
                         component={TextInput}
                         placeholder='Password'
                         type='password' />
                     <Button positive content="Login" />
-                    />
-            </Form>
+                </Form>
             )}
         />
-    )
+    );
 }
+
+export default LoginForm;
