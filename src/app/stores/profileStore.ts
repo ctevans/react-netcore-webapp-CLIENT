@@ -11,12 +11,12 @@ export default class ProfileStore {
     }
 
     @observable profile: IProfile | null = null;
-    @observable loadingProfile = false;
+    @observable loadingProfile = true;
 
     @action loadProfile = async (username: string) => {
         this.loadingProfile = true;
         try {
-            const profile = await agent.Profiles.get(username);
+            const profile = await agent.Profile.get(username);
             runInAction(()=>{
                 this.profile = profile;
                 this.loadingProfile = false;

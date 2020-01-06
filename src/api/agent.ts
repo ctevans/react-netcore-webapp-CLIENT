@@ -72,5 +72,5 @@ const Profile = {
 export default {
     Activities,
     User,
-    Profiles
+    Profile
 }
