@@ -5,6 +5,7 @@ import ActivityStore from '../../../app/stores/activityStore';
 import { IActivity } from '../../../app/models/activity';
 import { format } from 'date-fns';
 import { RootStoreContext } from '../../../app/stores/rootStore';
+import ActivityListItemAttendees from './ActivityListItemAttendees';
 
 const ActivityListItem: React.FC<{ activity: IActivity }> = ({ activity }) => {
     const rootStore = useContext(RootStoreContext);
@@ -29,7 +30,7 @@ const ActivityListItem: React.FC<{ activity: IActivity }> = ({ activity }) => {
                 <Icon name='marker' /> {activity.venue} {activity.city}
             </Segment>
             <Segment secondary>
-                Attendees will go here
+                <ActivityListItemAttendees attendees ={activity.attendees}/>
             </Segment>
             <Segment clearing>
                 <span>{activity.description}</span>
