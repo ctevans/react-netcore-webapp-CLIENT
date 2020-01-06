@@ -9,7 +9,7 @@ const panes = [
     },
     {
         menuItem: 'Photos',
-        render: () => <ProfilePhotos/>
+        render: () => <ProfilePhotos />
     },
     {
         menuItem: 'Events',
