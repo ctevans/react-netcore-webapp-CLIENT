@@ -7,6 +7,8 @@
     date: Date;
     city: string;
     venue: string;
+    isGoing: boolean; //Specific to currently logged in user.
+    isHost: boolean; //Specific to currently logged in user.
     attendees: IAttendee[];
   }
   
