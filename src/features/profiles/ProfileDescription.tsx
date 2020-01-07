@@ -16,7 +16,7 @@ const ProfileDescription = () => {
                     <Header
                         floated='left'
                         icon='user'
-                        content={`About ${profile!.username}`}
+                        content={`About ${profile!.displayName}`}
                     />
                     {isCurrentUser && (
                         <Button
