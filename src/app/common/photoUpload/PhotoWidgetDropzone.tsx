@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { url } from 'inspector'
 import { Header, Icon } from 'semantic-ui-react'
 
 interface IProps {
@@ -25,7 +24,7 @@ const PhotoWidgetDropzone: React.FC<IProps> = ({ setFiles }) => {
         setFiles(acceptedFiles.map((file: object) => Object.assign(file, {
             preview: URL.createObjectURL(file)
         })))
-    }, [])
+    }, [setFiles])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
     return (
