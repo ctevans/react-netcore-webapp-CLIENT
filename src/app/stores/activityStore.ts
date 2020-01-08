@@ -39,7 +39,9 @@ export default class ActivityStore {
             .catch(error => console.log("Error creating a connection: " + error));
         //Relies on ChatHub.cs definition. Spelling counts here!
         this.hubConnection.on('ReceiveComment', comment => {
-            this.activity!.comments.push(comment);
+            runInAction(() => {
+                this.activity!.comments.push(comment);
+            })
         })
     };
 
