@@ -23,7 +23,7 @@ export default class ActivityStore {
     @observable loading = false;
     @observable.ref hubConnection: HubConnection | null = null; //Just observe a reference to hub. Initiate only on activity details page.
 
-    @action createHubConnection = () => {
+    @action createHubConnection = (activityId: string) => {
         this.hubConnection = new HubConnectionBuilder()
             .withUrl('http://localhost:5000/chat', {
                 //Normally use HTTP header for token, SignalR does not do the same. Uses query string instead!
@@ -36,6 +36,11 @@ export default class ActivityStore {
         this.hubConnection
             .start()
             .then(() => console.log(this.hubConnection!.state))
+            .then(() => {
+                console.log("Attempting to join group!")
+                //MUST MATCH EXACT METHOD IN CHATHUB API!!!!!!!!!!! SPELLING! CHECK SPELLING!!!!
+                this.hubConnection!.invoke('AddToGroup', activityId);
+            })
             .catch(error => console.log("Error creating a connection: " + error));
         //Relies on ChatHub.cs definition. Spelling counts here!
         this.hubConnection.on('ReceiveComment', comment => {
@@ -43,10 +48,23 @@ export default class ActivityStore {
                 this.activity!.comments.push(comment);
             })
         })
+
+        this.hubConnection.on('Send', message => {
+            toast.info(message); //Just for testing, would be annoyin as HECK in production.
+        })
     };
 
     @action stopHubConnection = () => {
-        this.hubConnection!.stop()
+        //SPELLING MUST MATCH SERVER SIDE METHOD!!!!!!!!!!!!!!!!!!!!!!!!!!
+        this.hubConnection!.invoke('RemoveFromGroup', this.activity!.id)
+            .then(() => {
+                this.hubConnection!.stop()
+            })
+            .then(() => {
+                console.log("Connection has been stopped!");
+            })
+            .catch(error => console.log(error));
+            runInAction(() => { this.activity = null }); //THIS CONNECTION ERROR IS ANNOYING AND INFURIATING.
     }
 
     @action addComment = async (values: any) => {
@@ -135,6 +153,7 @@ export default class ActivityStore {
             let attendees = [];
             attendees.push(attendee);
             activity.attendees = attendees;
+            activity.comments = [];
             activity.isHost = true;
             runInAction("Create Activity", () => {
                 this.activityRegistry.set(activity.id, activity);
