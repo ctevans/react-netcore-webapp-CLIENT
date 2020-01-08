@@ -6,6 +6,7 @@ import { history } from '../../';
 import { toast } from 'react-toastify';
 import { RootStore } from './rootStore';
 import { setActivityProps, createAttendee } from '../common/util/util';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 export default class ActivityStore {
     rootStore: RootStore;
@@ -20,6 +21,41 @@ export default class ActivityStore {
     @observable submitting = false;
     @observable target = '';
     @observable loading = false;
+    @observable.ref hubConnection: HubConnection | null = null; //Just observe a reference to hub. Initiate only on activity details page.
+
+    @action createHubConnection = () => {
+        this.hubConnection = new HubConnectionBuilder()
+            .withUrl('http://localhost:5000/chat', {
+                //Normally use HTTP header for token, SignalR does not do the same. Uses query string instead!
+                accessTokenFactory: () => this.rootStore.commonStore.token!
+            })
+            .configureLogging(LogLevel.Information)
+            .build();
+
+        //Start connection.
+        this.hubConnection
+            .start()
+            .then(() => console.log(this.hubConnection!.state))
+            .catch(error => console.log("Error creating a connection: " + error));
+        //Relies on ChatHub.cs definition. Spelling counts here!
+        this.hubConnection.on('ReceiveComment', comment => {
+            this.activity!.comments.push(comment);
+        })
+    };
+
+    @action stopHubConnection = () => {
+        this.hubConnection!.stop()
+    }
+
+    @action addComment = async (values: any) => {
+        values.activityId = this.activity!.id;
+        try {
+            //NAme send comment MUST MATCH METHOD NAME ON SERVER!!!!!!!!
+            await this.hubConnection!.invoke('SendComment', values);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     @computed get activitiesByDate() {
         return this.groupActivitiesByDate(Array.from(this.activityRegistry.values()));
